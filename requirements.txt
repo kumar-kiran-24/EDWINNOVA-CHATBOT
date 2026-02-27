@@ -8,3 +8,15 @@ langchain-groq
 faiss-cpu
 python-dotenv
 pymupdf
+sentence-transformers
+fastapi
+uvicorn
+langchain
+langchain-community
+langchain-core
+langchain-huggingface
+langchain-groq
+faiss-cpu
+python-dotenv
+pymupdf
+sentence-transformers
