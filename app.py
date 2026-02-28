@@ -18,12 +18,15 @@ data_retriver=Dataretriver()
 
 @app.post("/chat")
 async def chat(request:ChatRequest):
-    question=request.question
-    context=data_retriver.search_data(query=question)
-    resopnse=chatbot.chatbot(question=question,context=context,session_id="1")
-    print(resopnse)
+    try:
+        question=request.question
+        context=data_retriver.search_data(query=question)
+        resopnse=chatbot.chatbot(question=question,context=context,session_id="1")
+        print(resopnse)
 
-    return {"Response":resopnse}
+        return {"Response":resopnse}
+    except Exception as e:
+        return {"error":str(e)}
 
 
 if __name__ == "__main__":

@@ -13,11 +13,11 @@ class Dataretriver:
     def __init__(self):
 
         embeddings = HuggingFaceEmbeddings(
-            model_name="all-MiniLM-L6-v2"
+            model_name="sentence-transformers/all-MiniLM-L6-v2"
         )
 
 
-        db_path = "embeddings"
+        db_path = os.path.join(os.getcwd(), "embeddings")
 
         self.vectorstore = FAISS.load_local(
             db_path,
@@ -27,9 +27,13 @@ class Dataretriver:
 
 
     def search_data(self,query):
-        
-        docs = self.vectorstore.similarity_search(query, k=3)
-        return docs
+        try:
+
+            
+            docs = self.vectorstore.similarity_search(query, k=3)
+            return docs
+        except Exception as e:
+            return {"error":str(e)}
 
 if __name__=="__main__":
     obj=Dataretriver()

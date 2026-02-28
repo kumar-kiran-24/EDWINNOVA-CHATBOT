@@ -65,40 +65,43 @@ class ChatBot:
     
 
     def chatbot(self,question,context,session_id):
+        try:
 
-        model=self.model
-        prompt=self.prompt
+            model=self.model
+            prompt=self.prompt
 
-        store=self.store
-        context_store=self.context_store
-        model=self.model
+            store=self.store
+            context_store=self.context_store
+            model=self.model
 
-        if session_id not in context_store:
-            context_store[session_id]=context
-        
-        self.saved_context=context_store[session_id]
-        self.session_id=session_id
+            if session_id not in context_store:
+                context_store[session_id]=context
+            
+            self.saved_context=context_store[session_id]
+            self.session_id=session_id
 
-        def get_session_history(session_id:str)->BaseChatMessageHistory:
-            if session_id not in store:
-                store[session_id]=InMemoryChatMessageHistory()
-            return store[session_id]
+            def get_session_history(session_id:str)->BaseChatMessageHistory:
+                if session_id not in store:
+                    store[session_id]=InMemoryChatMessageHistory()
+                return store[session_id]
 
 
-        chain=prompt | model
+            chain=prompt | model
 
-        self.bot=RunnableWithMessageHistory(
-            chain,
-            get_session_history=get_session_history,
-            input_messages_key="question",
-            history_messages_key="history"
-        )
+            self.bot=RunnableWithMessageHistory(
+                chain,
+                get_session_history=get_session_history,
+                input_messages_key="question",
+                history_messages_key="history"
+            )
 
-        response=self.bot.invoke({"question": question, "context": self.saved_context},
-            config={"configurable": {"session_id": self.session_id}}
-        )
+            response=self.bot.invoke({"question": question, "context": self.saved_context},
+                config={"configurable": {"session_id": self.session_id}}
+            )
 
-        return response.content
+            return response.content
+        except Exception as e:
+            return {"expection":str(e)}
 
         
     def ask(self,question):
