@@ -11,6 +11,7 @@ app=FastAPI()
 
 class ChatRequest(BaseModel):
     question:str
+    session_id:str
 
 
 chatbot=ChatBot()
@@ -20,8 +21,9 @@ data_retriver=Dataretriver()
 async def chat(request:ChatRequest):
     try:
         question=request.question
+        session_id=request.session_id
         context=data_retriver.search_data(query=question)
-        resopnse=chatbot.chatbot(question=question,context=context,session_id="1")
+        resopnse=chatbot.chatbot(question=question,context=context,session_id=session_id)
         print(resopnse)
 
         return {"Response":resopnse}
