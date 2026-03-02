@@ -6,7 +6,7 @@ from pathlib import Path
 #load the data from the pdf 
 from langchain_community.document_loaders import PyMuPDFLoader
 
-loader=PyMuPDFLoader("data/UPDATED_HACKATHON_PROPOSAL_16-2-2026.pdf")
+loader=PyMuPDFLoader("data/RAG(1).pdf")
 documnets=loader.load()
 
 
