@@ -8,9 +8,6 @@ from langchain_core.embeddings import Embeddings
 from fastembed import TextEmbedding
 
 
-# ---------------------------
-# Custom Embedding Class
-# ---------------------------
 class FastEmbedEmbeddings(Embeddings):
     def __init__(self):
         self.model = TextEmbedding(model_name="BAAI/bge-small-en-v1.5")
@@ -22,13 +19,9 @@ class FastEmbedEmbeddings(Embeddings):
         return list(self.model.embed([text]))[0]
 
 
-# ---------------------------
-# Data Retriever Class
-# ---------------------------
 class Dataretriver:
     def __init__(self):
 
-        # ✅ use lightweight embeddings
         embeddings = FastEmbedEmbeddings()
 
         db_path = os.path.join(os.getcwd(), "embeddings")
@@ -43,16 +36,12 @@ class Dataretriver:
         try:
             docs = self.vectorstore.similarity_search(query, k=3)
 
-            # ✅ convert to text (IMPORTANT for LLM)
             return "\n\n".join([doc.page_content for doc in docs])
 
         except Exception as e:
             return {"error": str(e)}
 
 
-# ---------------------------
-# Test
-# ---------------------------
 if __name__ == "__main__":
     obj = Dataretriver()
     result = obj.search_data(query="what is this document contains")
