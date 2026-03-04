@@ -42,6 +42,9 @@ async def chat(request: ChatRequest):
 
     except Exception as e:
         return {"error": str(e)}
+@app.get("/")
+def health():
+    return {"status":"running"}
 
 
 if __name__ == "__main__":
